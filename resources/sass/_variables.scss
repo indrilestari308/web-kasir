@@ -1,0 +1,7 @@
+@import 'variables'; // jika kamu punya _variables.scss, pastikan letaknya benar
+body {
+  background-color: $body-bg;
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+}
