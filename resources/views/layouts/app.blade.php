@@ -1,97 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SembakoMantap</title>
+    <title>Dashboard | Aplikasi Kasir</title>
 
-    @vite(['resources/sass/app.scss','resources/js/app.js'])
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Font Awesome (ikon) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom Style -->
     <style>
         body {
-            display: flex;
-            min-height: 100vh;
-            margin: 0;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .sidebar {
-            width: 220px;
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            flex-shrink: 0;
+        .navbar-brand {
+            font-weight: bold;
+            letter-spacing: 1px;
         }
 
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 1.4rem;
+        .nav-link {
+            color: #ffffff !important;
+            transition: background-color 0.3s ease;
         }
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            padding: 10px 20px;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            display: block;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #34495e;
+        .nav-link:hover {
+            background-color: #343a40;
             border-radius: 5px;
         }
 
-        .main-content {
-            flex-grow: 1;
-            background-color: #ecf0f1;
+        main.container {
             padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            border-radius: 10px;
         }
 
-        .navbar {
-            background-color: #2980b9;
-            color: white;
-            padding: 10px 20px;
-            margin-bottom: 20px;
+        .btn-danger {
+            padding: 5px 12px;
+            font-size: 14px;
         }
 
-        .navbar h4 {
-            margin: 0;
+        footer {
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+            color: #888;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard"><i class="fas fa-cash-register me-1"></i> KasirApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    {{-- Sidebar --}}
-    <div class="sidebar">
-        <h2>Point Of Sale</h2>
-        <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Data Produk</a></li>
-            <li><a href="#">Stock</a></li>
-            <li><a href="#">Transaksi</a></li>
-            <li><a href="#">Tambah User</a></li>
-            <li><a href="#">Ganti Foto</a></li>
-            <li><a href="#">Ganti Password</a></li>
-            <li><a href="#">Keluar</a></li>
-        </ul>
-    </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    @auth
+                        @if(auth()->user()->role == 'admin')
+                            <li class="nav-item"><a class="nav-link" href="/produk"><i class="fas fa-boxes me-1"></i>Produk</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/user"><i class="fas fa-users me-1"></i>User</a></li>
+                        @elseif(auth()->user()->role == 'kasir')
+                            <li class="nav-item"><a class="nav-link" href="/transaksi"><i class="fas fa-shopping-cart me-1"></i>Transaksi</a></li>
+                        @elseif(auth()->user()->role == 'pemilik')
+                            <li class="nav-item"><a class="nav-link" href="/laporan"><i class="fas fa-chart-line me-1"></i>Laporan</a></li>
+                        @endif
 
-    {{-- Main Content --}}
-    <div class="main-content">
-        <div class="navbar">
-            <h4>UD. SWALAYAN MAJU MANDIRI</h4>
+                        <li class="nav-item ms-3">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin logout?')">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    @endauth
+                </ul>
+            </div>
         </div>
+    </nav>
 
+    <!-- Main Content -->
+    <main class="container mt-4 mb-5">
         @yield('content')
-    </div>
+    </main>
 
+    <!-- Footer -->
+    <footer>
+        &copy; {{ date('Y') }} KasirApp. All rights reserved.
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -130,7 +130,7 @@
 
     <!-- NAVBAR -->
     <div class="navbar fixed-top">
-        <h4>🛒 UD. SWALAYAN MAJU MANDIRI</h4>
+        <h4>ADMIN SWALAYAN MAJU MANDIRI</h4>
         <span>Admin Panel</span>
     </div>
 

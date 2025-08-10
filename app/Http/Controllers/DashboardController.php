@@ -6,8 +6,15 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function admin()
+    public function index()
     {
-        return view('admin.dashboard');
+        $role = auth()->user()->role;
+
+        return match ($role) {
+            'admin' => view('admin.dashboard'),
+            'kasir' => view('kasir.dashboard'),
+            'pemilik' => view('pemilik.dashboard'),
+            default => abort(403)
+        };
     }
 }

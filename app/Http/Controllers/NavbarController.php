@@ -10,4 +10,9 @@ class NavbarController extends Controller
     {
         return view('admin.navbar');
     }
+
+    public function kasir()
+    {
+        return view('kasir.navbar');
+    }
 }
