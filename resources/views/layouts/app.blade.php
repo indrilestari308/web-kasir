@@ -1,105 +1,140 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Aplikasi Kasir</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>SarwodadiMantap</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Font Awesome (ikon) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <!-- Custom Style -->
     <style>
         body {
-            background-color: #f8f9fa;
+            min-height: 100vh;
+            margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d0c5e0, #e6f0ff);
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .navbar-brand {
-            font-weight: bold;
-            letter-spacing: 1px;
+        /* Efek tambahan bentuk blur di background */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(111, 66, 193, 0.25);
+            filter: blur(120px);
+            z-index: -1;
+            border-radius: 50%;
         }
 
-        .nav-link {
-            color: #ffffff !important;
-            transition: background-color 0.3s ease;
+        body::before {
+            top: -100px;
+            left: -150px;
         }
 
-        .nav-link:hover {
-            background-color: #343a40;
-            border-radius: 5px;
+        body::after {
+            bottom: -150px;
+            right: -150px;
+            background: rgba(142, 99, 227, 0.25);
         }
 
-        main.container {
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            border-radius: 10px;
+
+        .navbar {
+            background: linear-gradient(90deg, #6f42c1, #8e63e3);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
         }
 
-        .btn-danger {
-            padding: 5px 12px;
-            font-size: 14px;
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            opacity: 0.85;
         }
 
         footer {
+            background: transparent; /* Hapus warna background */
+            color: #6f42c1; /* Warna teks disesuaikan agar tetap terlihat */
+            padding: 15px 0;
             text-align: center;
-            padding: 15px;
-            margin-top: 40px;
-            color: #888;
-            font-size: 14px;
+            margin-top: auto;
+            border-top: 1px solid rgba(111, 66, 193, 0.2); /* Garis tipis pemisah */
+        }
+
+        footer small {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+
+
+        .container-main {
+            padding-top: 20px;
+            min-height: calc(100vh - 120px);
         }
     </style>
+
+
+    @stack('styles')
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="/dashboard"><i class="fas fa-cash-register me-1"></i> KasirApp</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    @auth
-                        @if(auth()->user()->role == 'admin')
-                            <li class="nav-item"><a class="nav-link" href="/produk"><i class="fas fa-boxes me-1"></i>Produk</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/user"><i class="fas fa-users me-1"></i>User</a></li>
-                        @elseif(auth()->user()->role == 'kasir')
-                            <li class="nav-item"><a class="nav-link" href="/transaksi"><i class="fas fa-shopping-cart me-1"></i>Transaksi</a></li>
-                        @elseif(auth()->user()->role == 'pemilik')
-                            <li class="nav-item"><a class="nav-link" href="/laporan"><i class="fas fa-chart-line me-1"></i>Laporan</a></li>
-                        @endif
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">Swalayan Sarwodadi</a>
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                        <li class="nav-item ms-3">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin logout?')">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </button>
-                            </form>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Menu kiri -->
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                @auth
+                    @if(Auth::user()->role == 'admin')
+                        @include('admin.navbar')
+                    @elseif(Auth::user()->role == 'kasir')
+                        @include('kasir.navbar')
+                    @elseif(Auth::user()->role == 'pemilik')
+                        @include('pemilik.navbar')
+                    @endif
+                @endauth
+
+                <!-- Form Pencarian -->
+                <form class="d-flex ms-lg-3 mt-2 mt-lg-0" method="GET" action="{{ route('search') }}">
+                    <input class="form-control form-control-sm me-2" type="search" name="q" placeholder="Cari..." aria-label="Search">
+                    <button class="btn btn-light btn-sm" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <!-- Main Content -->
-    <main class="container mt-4 mb-5">
+    <div class="container container-main">
         @yield('content')
-    </main>
+    </div>
 
     <!-- Footer -->
     <footer>
-        &copy; {{ date('Y') }} KasirApp. All rights reserved.
+        <div class="container">
+            <small>&copy; {{ date('Y') }} Web Kasir. All rights reserved.</small>
+        </div>
     </footer>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    @stack('scripts')
 </body>
 </html>
