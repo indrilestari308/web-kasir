@@ -31,7 +31,7 @@
         margin-top: auto;
     }
     .stat-footer a {
-        color: #fff;
+        color: #180447;
         text-decoration: underline;
     }
 </style>
@@ -44,10 +44,10 @@
                     <i class="bi bi-box-seam"></i>
                 </div>
                 <h5>Total Produk</h5>
-                <h2>120</h2>
+                <h2>1</h2>
             </div>
             <div class="stat-footer">
-                <a href="{{ url('/admin/produk') }}">Lihat semua produk</a>
+                <a href="{{ route('admin.produk') }}">Lihat Produk</a>
             </div>
         </div>
     </div>
@@ -58,10 +58,10 @@
                     <i class="bi bi-tags"></i>
                 </div>
                 <h5>Kategori</h5>
-                <h2>8</h2>
+                <h2>100</h2>
             </div>
             <div class="stat-footer">
-                <a href="{{ url('/admin/kategori') }}">Kelola kategori</a>
+                <a href="{{ route('admin.kategori') }}">Lihat Kategori</a>
             </div>
         </div>
     </div>
@@ -86,10 +86,10 @@
                     <i class="bi bi-bag-plus"></i>
                 </div>
                 <h5>Produk Baru Masuk</h5>
-                <h2>15</h2>
+                <h2>30</h2>
             </div>
             <div class="stat-footer">
-                <a href="{{ url('/produkbaru') }}">Detail produk baru</a>
+                <a href="{{ url('/produk/baru') }}">Detail produk baru</a>
             </div>
         </div>
     </div>
