@@ -8,6 +8,7 @@ use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DashboardController;
 
 // LOGIN & LOGOUT
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'role:admin,superadmin'])->prefix('admin')->group(fun
     // Users
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
 });
+
+// Transaksi umum
+Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+Route::post('/transaksi/hitung', [TransaksiController::class, 'hitung'])->name('transaksi.hitung');
 
 // ======================= KASIR =======================
 Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->group(function () {
