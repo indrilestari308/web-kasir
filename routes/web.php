@@ -5,6 +5,7 @@ use Illuminate\Support\Facedes\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\TransaksiController;
 
 
 
@@ -23,6 +24,12 @@ Route::get('/admin/produk', [ProdukController::class, 'produk'])->name('admin.pr
 
 
 Route::get('/password/reset', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+
+
+
+Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+Route::post('/transaksi/hitung', [TransaksiController::class, 'hitung'])->name('transaksi.hitung');
+
 
 
 
