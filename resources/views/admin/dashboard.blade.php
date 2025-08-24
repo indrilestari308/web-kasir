@@ -1,92 +1,100 @@
-@extends('admin.navbar')
+@extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <h2 class="mb-4">Selamat Datang </h2>
+<style>
+    .stat-card {
+        border-radius: 15px;
+        padding: 20px;
+        transition: transform 0.2s ease-in-out;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 150px;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    .stat-icon {
+        font-size: 2rem;
+        opacity: 0.9;
+    }
+    /* Semua card warna seragam gradasi biru */
+    .bg-dashboard {
+        background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    }
+    .stat-footer {
+        font-size: 0.9rem;
+        opacity: 0.85;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        padding-top: 5px;
+        margin-top: auto;
+    }
+    .stat-footer a {
+        color: #180447;
+        text-decoration: underline;
+    }
+</style>
 
-    <div class="row">
-        <!-- Statistik 1 -->
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6>Total Pendapatan</h6>
-                    <h4 class="text-primary">Rp12.628.000</h4>
-                    <small class="text-success">+28.5% dari bulan lalu</small>
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="card shadow border-0 text-center stat-card bg-dashboard">
+            <div>
+                <div class="stat-icon mb-2">
+                    <i class="bi bi-box-seam"></i>
                 </div>
+                <h5>Total Produk</h5>
+                <h2>1</h2>
             </div>
-        </div>
-
-        <!-- Statistik 2 -->
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6>Total Penjualan</h6>
-                    <h4 class="text-success">Rp4.679.000</h4>
-                    <small class="text-success">+16.2% dari bulan lalu</small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Statistik 3 -->
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6>Pembayaran</h6>
-                    <h4 class="text-warning">Rp2.468.000</h4>
-                    <small class="text-danger">-5.4% dari bulan lalu</small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Statistik 4 -->
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6>Jumlah Transaksi</h6>
-                    <h4 class="text-info">87 Transaksi</h4>
-                    <small class="text-success">+7.2% dari bulan lalu</small>
-                </div>
+            <div class="stat-footer">
+                <a href="{{ route('admin.produk') }}">Lihat Produk</a>
             </div>
         </div>
     </div>
-
-    <!-- Chart Penjualan -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <h5 class="mb-3">Grafik Penjualan Bulanan</h5>
-            <canvas id="salesChart" height="100"></canvas>
+    <div class="col-md-3 mb-3">
+        <div class="card shadow border-0 text-center stat-card bg-dashboard">
+            <div>
+                <div class="stat-icon mb-2">
+                    <i class="bi bi-tags"></i>
+                </div>
+                <h5>Kategori</h5>
+                <h2>100</h2>
+            </div>
+            <div class="stat-footer">
+                <a href="{{ route('admin.kategori') }}">Lihat Kategori</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card shadow border-0 text-center stat-card bg-dashboard">
+            <div>
+                <div class="stat-icon mb-2">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h5>Pengguna</h5>
+                <h2>5</h2>
+            </div>
+            <div class="stat-footer">
+                <a href="{{ url('/admin/users') }}">Lihat daftar pengguna</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card shadow border-0 text-center stat-card bg-dashboard">
+            <div>
+                <div class="stat-icon mb-2">
+                    <i class="bi bi-bag-plus"></i>
+                </div>
+                <h5>Produk Baru Masuk</h5>
+                <h2>30</h2>
+            </div>
+            <div class="stat-footer">
+                <a href="{{ url('/produk/baru') }}">Detail produk baru</a>
+            </div>
         </div>
     </div>
 </div>
-@endsection
 
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-            datasets: [{
-                label: 'Penjualan',
-                data: [1200000, 1500000, 1800000, 2000000, 1700000, 2100000],
-                backgroundColor: '#0d6efd'
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp' + value.toLocaleString();
-                        }
-                    }
-                }
-            }
-        }
-    });
-</script>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection

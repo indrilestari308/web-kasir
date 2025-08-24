@@ -1,37 +1,65 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facedes\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KasirController;
+use App\Http\Controllers\PemilikController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
+HEAD
 use App\Http\Controllers\TransaksiController;
+=======
+use App\Http\Controllers\DashboardController;
+ c7f5b70f69e5438743d8036533b785eaf716b2ea
 
-
-
+// LOGIN & LOGOUT
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
-Route::post('/register', [AuthController::class, 'register'])->name('register.process');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('login.google');
-Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+// ======================= ADMIN =======================
+Route::middleware(['auth', 'role:admin,superadmin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
-Route::get('/admin/navbar', [NavbarController::class, 'admin'])->name('admin.navbar');
-Route::get('/admin/produk', [ProdukController::class, 'produk'])->name('admin.produk');
+    // Kategori
+    Route::get('/kategori', [AdminController::class, 'kategori'])->name('admin.kategori');
+    Route::get('/kategori/tambah', [AdminController::class, 'create'])->name('admin.kategori.create');
+    Route::post('/kategori', [AdminController::class, 'store'])->name('admin.kategori.store');
 
+    // Produk
+    Route::get('/produk', [AdminController::class, 'produk'])->name('admin.produk');
+    Route::get('/produk/tambah', [AdminController::class, 'createProduk'])->name('admin.produk.create');
+    Route::post('/produk', [AdminController::class, 'storeProduk'])->name('admin.produk.store');
 
-Route::get('/password/reset', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+    // Users
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+});
 
-
-
+HEAD
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
 Route::post('/transaksi/hitung', [TransaksiController::class, 'hitung'])->name('transaksi.hitung');
 
 
 
 
+=======
+// ======================= KASIR =======================
+Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->group(function () {
+    Route::get('/dashboard', [KasirController::class, 'dashboard'])->name('kasir.dashboard');
+    Route::get('/transaksi', [KasirController::class, 'transaksi'])->name('kasir.transaksi');
+});
+c7f5b70f69e5438743d8036533b785eaf716b2ea
 
+// ======================= PEMILIK =======================
+Route::middleware(['auth', 'role:pemilik'])->prefix('pemilik')->group(function () {
+    Route::get('/dashboard', [PemilikController::class, 'dashboard'])->name('pemilik.dashboard');
+    Route::get('/laporan', [PemilikController::class, 'laporan'])->name('pemilik.laporan');
+});
 
+// ======================= SEARCH =======================
+Route::get('/search', function (Request $request) {
+    $query = $request->input('q');
+    return "Kamu mencari: " . $query;
+})->name('search');
