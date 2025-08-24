@@ -8,11 +8,8 @@ use App\Http\Controllers\PemilikController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
-HEAD
 use App\Http\Controllers\TransaksiController;
-=======
 use App\Http\Controllers\DashboardController;
- c7f5b70f69e5438743d8036533b785eaf716b2ea
 
 // LOGIN & LOGOUT
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -37,20 +34,15 @@ Route::middleware(['auth', 'role:admin,superadmin'])->prefix('admin')->group(fun
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
 });
 
-HEAD
+// Transaksi umum
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
 Route::post('/transaksi/hitung', [TransaksiController::class, 'hitung'])->name('transaksi.hitung');
 
-
-
-
-=======
 // ======================= KASIR =======================
 Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->group(function () {
     Route::get('/dashboard', [KasirController::class, 'dashboard'])->name('kasir.dashboard');
     Route::get('/transaksi', [KasirController::class, 'transaksi'])->name('kasir.transaksi');
 });
-c7f5b70f69e5438743d8036533b785eaf716b2ea
 
 // ======================= PEMILIK =======================
 Route::middleware(['auth', 'role:pemilik'])->prefix('pemilik')->group(function () {
